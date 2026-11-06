@@ -7,6 +7,8 @@ Built with **Tailwind CSS** and plain HTML/JavaScript (no framework).
 
 - Dark and light mode (follows the system setting on first visit, remembered afterwards)
 - Responsive layout for mobile, tablet and desktop
+- Full-screen desktop sections with slower smooth transitions and free scrolling on mobile
+- GitHub profile avatar that follows the current profile image
 - Interactive slash-command console in the hero (`/about`, `/projects`, `/stack`, `/contact`, `/theme`, `/clear`)
 - Typing animation, scroll progress bar, scroll reveal, cursor glow and 3D tilt on project cards
 - Project filter (All / Discord bots / Web apps)

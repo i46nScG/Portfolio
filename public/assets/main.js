@@ -97,14 +97,31 @@ document.addEventListener("keydown", (e) => {
 
 const bar = $("#bar"),
     nav = $("#nav");
+const sectionLinks = document.querySelectorAll(".section-nav-link");
+const pageSections = [...document.querySelectorAll("main > .page-section")];
 function onScroll() {
     const max = root.scrollHeight - innerHeight;
     bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
     nav.classList.toggle("border-transparent", scrollY <= 10);
     nav.classList.toggle("border-line", scrollY > 10);
     nav.classList.toggle("bg-bg/70", scrollY > 10);
+
+    const viewportCenter = innerHeight / 2;
+    const activeSection = pageSections.find((section) => {
+        const bounds = section.getBoundingClientRect();
+        return bounds.top <= viewportCenter && bounds.bottom > viewportCenter;
+    });
+    const activeId = activeSection?.id;
+    sectionLinks.forEach((link) => {
+        if (link.hash === `#${activeId}`) {
+            link.setAttribute("aria-current", "location");
+        } else {
+            link.removeAttribute("aria-current");
+        }
+    });
 }
 addEventListener("scroll", onScroll, { passive: true });
+addEventListener("resize", onScroll, { passive: true });
 onScroll();
 
 if (finePointer && !reduced) {
@@ -165,14 +182,14 @@ function renderProjects() {
     grid.innerHTML = list
         .map(
             (p, i) => `
-    <article data-reveal style="--d:${i * 0.06}s" class="card relative flex flex-col rounded-2xl border border-line bg-surface p-6 ${i === 0 && active === "all" ? "lg:col-span-2" : ""}">
+    <article data-reveal="scale" style="--d:${i * 0.06}s" class="card relative flex flex-col rounded-2xl border border-line bg-surface p-6 ${i === 0 && active === "all" ? "lg:col-span-2" : ""}">
       <div class="flex items-center justify-between text-sm text-muted">
         <span class="flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-full" style="background:${langColor[p.lang]}"></i>${p.lang}</span>
         <span>${typeLabel[p.type]}</span>
       </div>
       <h3 class="mt-5 font-display ${i === 0 && active === "all" ? "text-4xl" : "text-2xl"} font-bold tracking-tight">${p.name}</h3>
       <p class="mt-3 flex-1 leading-relaxed text-muted">${p.desc}</p>
-      <a href="${p.url}" target="_blank" rel="noopener" class="mt-6 inline-block font-semibold text-accent underline-offset-4 hover:underline">View on GitHub</a>
+      <a href="${p.url}" target="_blank" rel="noopener" class="card-link mt-6 inline-flex w-fit items-center gap-1 font-semibold text-accent underline-offset-4 hover:underline">View on GitHub <span aria-hidden="true">↗</span></a>
     </article>`,
         )
         .join("");
@@ -257,7 +274,7 @@ const out = $("#out"),
     input = $("#cmdInput");
 function line(html, cls = "text-muted") {
     const d = document.createElement("div");
-    d.className = cls;
+    d.className = cls + " terminal-line";
     d.innerHTML = html;
     out.appendChild(d);
     out.scrollTop = out.scrollHeight;
@@ -298,10 +315,26 @@ function run(raw) {
     (commands[name] || (() => line("Unknown command. Type /help.", "text-sakura")))();
 }
 line("Tap a command below or type one. Start with /help.");
-$("#cmd").addEventListener("submit", (e) => {
+const commandForm = $("#cmd");
+const terminalWrap = document.querySelector(".hero-terminal-wrap");
+let commandHovered = false;
+function updateCommandBadge() {
+    terminalWrap.classList.toggle("is-command-active", commandHovered || input.value.length > 0);
+}
+commandForm.addEventListener("pointerenter", () => {
+    commandHovered = true;
+    updateCommandBadge();
+});
+commandForm.addEventListener("pointerleave", () => {
+    commandHovered = false;
+    updateCommandBadge();
+});
+input.addEventListener("input", updateCommandBadge);
+commandForm.addEventListener("submit", (e) => {
     e.preventDefault();
     run(input.value);
     input.value = "";
+    updateCommandBadge();
 });
 document
     .querySelectorAll("[data-cmd]")
@@ -317,4 +350,102 @@ copy.addEventListener("click", async () => {
     }
     setTimeout(() => (copy.textContent = "Copy email"), 1800);
 });
+
+const sectionScroll = matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)");
+if (sectionScroll.matches && !reduced) {
+    const sections = [...document.querySelectorAll("main > .page-section")];
+    let animationFrame = 0;
+    let queuedDirection = 0;
+
+    function scrollToSection(direction) {
+        const currentY = scrollY;
+        const currentIndex = sections.reduce(
+            (closest, section, index) =>
+                Math.abs(section.offsetTop - currentY) <
+                Math.abs(sections[closest].offsetTop - currentY)
+                    ? index
+                    : closest,
+            0,
+        );
+        const current = sections[currentIndex];
+        const next = sections[currentIndex + direction];
+        if (!next || current.scrollHeight > innerHeight + 2) {
+            animationFrame = 0;
+            return;
+        }
+
+        const start = scrollY;
+        const destination = next.offsetTop;
+        const duration = 1100;
+        const scrollBehavior = root.style.scrollBehavior;
+        const scrollSnapType = root.style.scrollSnapType;
+        root.style.scrollBehavior = "auto";
+        root.style.scrollSnapType = "none";
+        let startedAt;
+
+        function animate(timestamp) {
+            startedAt ??= timestamp;
+            const progress = Math.min((timestamp - startedAt) / duration, 1);
+            const eased = progress < 0.5 ? 4 * progress ** 3 : 1 - (-2 * progress + 2) ** 3 / 2;
+            root.scrollTop = start + (destination - start) * eased;
+
+            if (progress < 1) {
+                animationFrame = requestAnimationFrame(animate);
+                return;
+            }
+
+            root.scrollTop = destination;
+            root.style.scrollBehavior = scrollBehavior;
+            root.style.scrollSnapType = scrollSnapType;
+            animationFrame = 0;
+            const queued = queuedDirection;
+            queuedDirection = 0;
+            if (queued) scrollToSection(queued);
+        }
+
+        animationFrame = requestAnimationFrame(animate);
+    }
+
+    addEventListener(
+        "wheel",
+        (event) => {
+            if (!sectionScroll.matches) return;
+            if (event.ctrlKey || Math.abs(event.deltaY) < 8) return;
+            const direction = Math.sign(event.deltaY);
+            const output = event.target.closest("#out");
+            if (
+                output &&
+                (direction > 0
+                    ? output.scrollTop + output.clientHeight < output.scrollHeight
+                    : output.scrollTop > 0)
+            ) {
+                return;
+            }
+
+            if (animationFrame) {
+                event.preventDefault();
+                queuedDirection = direction;
+                return;
+            }
+
+            const current = sections.reduce(
+                (closest, section) =>
+                    Math.abs(section.offsetTop - scrollY) <
+                    Math.abs(sections[closest].offsetTop - scrollY)
+                        ? sections.indexOf(section)
+                        : closest,
+                0,
+            );
+            if (
+                sections[current].scrollHeight <= innerHeight + 2 &&
+                sections[current + direction]
+            ) {
+                event.preventDefault();
+                scrollToSection(direction);
+            }
+        },
+        { passive: false },
+    );
+}
+
 $("#year").textContent = new Date().getFullYear();
