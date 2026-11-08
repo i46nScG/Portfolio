@@ -557,23 +557,23 @@ video {
 /* Theme tokens: edit these to recolor the whole site (R G B). */
 
 :root {
-  --bg: 238 241 250;
+  --bg: 250 250 250;
   --surface: 255 255 255;
-  --ink: 27 31 59;
-  --muted: 92 98 134;
-  --line: 214 219 238;
-  --accent: 84 84 210;
-  --sakura: 207 44 100;
+  --ink: 24 24 27;
+  --muted: 113 113 122;
+  --line: 228 228 231;
+  --accent: 24 24 27;
+  --soft: 82 82 91;
 }
 
 .dark {
-  --bg: 15 18 38;
-  --surface: 25 29 58;
-  --ink: 232 234 246;
-  --muted: 156 162 196;
-  --line: 46 51 92;
-  --accent: 139 140 255;
-  --sakura: 255 122 168;
+  --bg: 9 9 11;
+  --surface: 24 24 27;
+  --ink: 244 244 245;
+  --muted: 161 161 170;
+  --line: 63 63 70;
+  --accent: 244 244 245;
+  --soft: 161 161 170;
 }
 
 html {
@@ -1069,13 +1069,13 @@ body {
   background-color: rgb(var(--muted) / 0.4);
 }
 
-.bg-sakura {
+.bg-soft {
   --tw-bg-opacity: 1;
-  background-color: rgb(var(--sakura) / var(--tw-bg-opacity, 1));
+  background-color: rgb(var(--soft) / var(--tw-bg-opacity, 1));
 }
 
-.bg-sakura\/80 {
-  background-color: rgb(var(--sakura) / 0.8);
+.bg-soft\/80 {
+  background-color: rgb(var(--soft) / 0.8);
 }
 
 .bg-surface {
@@ -1256,9 +1256,9 @@ body {
   color: rgb(var(--muted) / var(--tw-text-opacity, 1));
 }
 
-.text-sakura {
+.text-soft {
   --tw-text-opacity: 1;
-  color: rgb(var(--sakura) / var(--tw-text-opacity, 1));
+  color: rgb(var(--soft) / var(--tw-text-opacity, 1));
 }
 
 .underline {
@@ -1415,7 +1415,7 @@ body {
   display: block;
   flex: none;
   border-radius: 9999px;
-  background: linear-gradient(135deg, rgb(var(--accent)), rgb(var(--sakura)));
+  background: linear-gradient(135deg, rgb(var(--accent)), rgb(var(--soft)));
   padding: 3px;
 }
 
@@ -1557,7 +1557,7 @@ body {
   isolation: isolate;
   background:
         radial-gradient(ellipse at 82% 35%, rgb(var(--accent) / 0.07), transparent 38%),
-        radial-gradient(ellipse at 8% 85%, rgb(var(--sakura) / 0.06), transparent 35%);
+        radial-gradient(ellipse at 8% 85%, rgb(var(--soft) / 0.06), transparent 35%);
 }
 
 .hero-grid {
@@ -1595,13 +1595,13 @@ body {
   height: 0.55rem;
   flex: none;
   border-radius: 9999px;
-  background: #35c98a;
-  box-shadow: 0 0 0 4px rgb(53 201 138 / 0.13);
+  background: rgb(var(--soft));
+  box-shadow: 0 0 0 4px rgb(var(--soft) / 0.13);
   animation: status-pulse 2s ease-in-out infinite;
 }
 
 .status-divider {
-  color: rgb(var(--sakura));
+  color: rgb(var(--soft));
 }
 
 .hero-footnote {
@@ -1612,7 +1612,7 @@ body {
 .hero-footnote-line {
   width: 2rem;
   height: 1px;
-  background: rgb(var(--sakura));
+  background: rgb(var(--soft));
 }
 
 .hero-terminal-wrap {
@@ -1647,7 +1647,7 @@ body {
 .orbit-two {
   inset: -2.5rem 1rem;
   transform: rotate(28deg);
-  border-color: rgb(var(--sakura) / 0.18);
+  border-color: rgb(var(--soft) / 0.18);
   animation: orbit-spin 48s linear infinite reverse;
 }
 
@@ -1699,7 +1699,7 @@ body {
 
 .hero-terminal-wrap.is-command-active .note-bottom {
   bottom: -4.5rem;
-  left: -1.50rem;
+  left: -1.5rem;
 }
 
 .note-bottom {
@@ -1720,7 +1720,7 @@ body {
 
 @keyframes status-pulse {
   50% {
-    box-shadow: 0 0 0 7px rgb(53 201 138 / 0.04);
+    box-shadow: 0 0 0 7px rgb(var(--soft) / 0.04);
   }
 }
 
@@ -1754,7 +1754,7 @@ body {
   width: 0.08em;
   height: 0.9em;
   margin-left: 0.06em;
-  background: rgb(var(--sakura));
+  background: rgb(var(--soft));
   vertical-align: -0.05em;
   animation: blink 1s steps(1) infinite;
 }
