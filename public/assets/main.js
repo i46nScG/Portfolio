@@ -36,12 +36,6 @@ const projects = [
     },
 ];
 const stack = ["JavaScript", "TypeScript", "PHP", "CSS", "Discord.js", "Cloudflare Workers", "CI4"];
-const langColor = {
-    JavaScript: "#f1e05a",
-    TypeScript: "#3178c6",
-    PHP: "#4F5D95",
-    CSS: "#563d7c",
-};
 const roles = ["Discord bots", "web tools", "serverless bots", "things in TypeScript"];
 const email = "Tokioshy@pm.me";
 
@@ -184,7 +178,7 @@ function renderProjects() {
             (p, i) => `
     <article data-reveal="scale" style="--d:${i * 0.06}s" class="card relative flex flex-col rounded-2xl border border-line bg-surface p-6 ${i === 0 && active === "all" ? "lg:col-span-2" : ""}">
       <div class="flex items-center justify-between text-sm text-muted">
-        <span class="flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-full" style="background:${langColor[p.lang]}"></i>${p.lang}</span>
+        <span class="flex items-center gap-2"><i class="h-2.5 w-2.5 rounded-full bg-soft"></i>${p.lang}</span>
         <span>${typeLabel[p.type]}</span>
       </div>
       <h3 class="mt-5 font-display ${i === 0 && active === "all" ? "text-4xl" : "text-2xl"} font-bold tracking-tight">${p.name}</h3>
@@ -312,7 +306,7 @@ function run(raw) {
     if (!name) return;
     const echo = line("", "text-ink");
     echo.textContent = "/" + name;
-    (commands[name] || (() => line("Unknown command. Type /help.", "text-sakura")))();
+    (commands[name] || (() => line("Unknown command. Type /help.", "text-soft")))();
 }
 line("Tap a command below or type one. Start with /help.");
 const commandForm = $("#cmd");
