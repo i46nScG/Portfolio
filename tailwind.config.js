@@ -12,7 +12,7 @@ module.exports = {
                 muted: "rgb(var(--muted) / <alpha-value>)",
                 line: "rgb(var(--line) / <alpha-value>)",
                 accent: "rgb(var(--accent) / <alpha-value>)",
-                sakura: "rgb(var(--sakura) / <alpha-value>)",
+                soft: "rgb(var(--soft) / <alpha-value>)",
             },
             fontFamily: {
                 display: ['"Bricolage Grotesque"', "system-ui", "sans-serif"],
