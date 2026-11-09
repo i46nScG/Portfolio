@@ -2,3 +2,5 @@ node_modules
 
 package-lock.json
 
+# shhh, you don't need.
+AGENTS.md
