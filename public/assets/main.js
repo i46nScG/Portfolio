@@ -103,7 +103,17 @@ const sectionIndexForHash = (hash) => {
     const id = sectionAliases.get(hash.replace(/^#/, "")) || hash.replace(/^#/, "");
     return pageSections.findIndex((section) => section.id === id);
 };
-let currentSectionIndex = Math.max(sectionIndexForHash(location.hash), 0);
+const getCleanUrl = () => location.pathname + location.search;
+let currentSectionIndex = Math.max(
+    sectionIndexForHash(location.hash),
+    typeof history.state?.sectionIndex === "number" ? history.state.sectionIndex : 0,
+    0,
+);
+if (location.hash) {
+    history.replaceState({ sectionIndex: currentSectionIndex }, "", getCleanUrl());
+} else if (!history.state) {
+    history.replaceState({ sectionIndex: currentSectionIndex }, "", getCleanUrl());
+}
 const transitionDuration = reduced ? 0 : 850;
 let transitionTimer = 0;
 let pendingNavigation = null;
@@ -164,6 +174,11 @@ desktopSectionMode.addEventListener("change", (event) => {
 });
 setDesktopNavigation(desktopSectionMode.matches);
 updateNavigationState();
+if (!desktopSectionMode.matches && currentSectionIndex > 0) {
+    requestAnimationFrame(() => {
+        pageSections[currentSectionIndex]?.scrollIntoView();
+    });
+}
 
 function navigateToSection(index, { updateHistory = true } = {}) {
     if (index < 0 || index >= pageSections.length || index === currentSectionIndex) return;
@@ -175,11 +190,13 @@ function navigateToSection(index, { updateHistory = true } = {}) {
     const previousIndex = currentSectionIndex;
     const previous = pageSections[previousIndex];
     const next = pageSections[index];
-    if (updateHistory) history.pushState(null, "", `#${next.id}`);
+    if (updateHistory) history.pushState({ sectionIndex: index }, "", getCleanUrl());
 
     transitioning = true;
     currentSectionIndex = index;
     const enteringFromRight = index % 2 === 1;
+    next.style.setProperty("--entry-offset", enteringFromRight ? "100%" : "-100%");
+    void next.offsetWidth;
     previous.style.setProperty("--exit-offset", enteringFromRight ? "-100%" : "100%");
     previous.classList.remove("is-active");
     previous.classList.add("is-leaving");
@@ -190,9 +207,22 @@ function navigateToSection(index, { updateHistory = true } = {}) {
     next.classList.add("is-active");
     updateNavigationState();
 
-    function finishTransition() {
-        if (!transitioning) return;
+    let transitionFinished = false;
+    let onTransitionEnd = null;
+
+    function cleanupTransition() {
         clearTimeout(transitionTimer);
+        transitionTimer = 0;
+        if (onTransitionEnd) {
+            next.removeEventListener("transitionend", onTransitionEnd);
+            onTransitionEnd = null;
+        }
+    }
+
+    function finishTransition() {
+        if (transitionFinished || !transitioning) return;
+        transitionFinished = true;
+        cleanupTransition();
         previous.classList.remove("is-leaving");
         previous.style.removeProperty("--exit-offset");
         transitioning = false;
@@ -205,24 +235,20 @@ function navigateToSection(index, { updateHistory = true } = {}) {
     }
 
     if (!transitionDuration) {
-        previous.classList.remove("is-leaving");
-        previous.style.removeProperty("--exit-offset");
-        transitioning = false;
+        finishTransition();
         return;
     }
 
-    next.addEventListener(
-        "transitionend",
-        (event) => {
-            if (event.propertyName === "transform") finishTransition();
-        },
-        { once: true },
-    );
+    onTransitionEnd = (event) => {
+        if (event.target === next && event.propertyName === "transform") {
+            finishTransition();
+        }
+    };
+    next.addEventListener("transitionend", onTransitionEnd);
     transitionTimer = setTimeout(finishTransition, transitionDuration + 100);
 }
 
 document.addEventListener("click", (event) => {
-    if (!desktopSectionMode.matches) return;
     const anchor = event.target instanceof Element ? event.target.closest("a[href^='#']") : null;
     if (
         !anchor ||
@@ -239,15 +265,42 @@ document.addEventListener("click", (event) => {
     const index = sectionIndexForHash(anchor.hash);
     if (index < 0) return;
     event.preventDefault();
-    navigateToSection(index);
+    if (desktopSectionMode.matches) {
+        navigateToSection(index);
+    } else {
+        history.pushState({ sectionIndex: index }, "", getCleanUrl());
+        currentSectionIndex = index;
+        updateNavigationState();
+        pageSections[index]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+    }
+});
+
+addEventListener("popstate", (event) => {
+    const targetIndex =
+        typeof event.state?.sectionIndex === "number" ? event.state.sectionIndex : 0;
+    if (targetIndex === currentSectionIndex) return;
+    if (desktopSectionMode.matches) {
+        navigateToSection(targetIndex, { updateHistory: false });
+    } else {
+        currentSectionIndex = targetIndex;
+        updateNavigationState();
+        pageSections[targetIndex]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+    }
 });
 
 addEventListener("hashchange", () => {
+    const index = sectionIndexForHash(location.hash);
+    if (location.hash) {
+        history.replaceState({ sectionIndex: Math.max(index, 0) }, "", getCleanUrl());
+    }
     if (!desktopSectionMode.matches) {
+        if (index >= 0) {
+            currentSectionIndex = index;
+            pageSections[index]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+        }
         updateNavigationState();
         return;
     }
-    const index = sectionIndexForHash(location.hash);
     if (index >= 0) navigateToSection(index, { updateHistory: false });
 });
 
@@ -274,7 +327,11 @@ addEventListener(
     "wheel",
     (event) => {
         if (!desktopSectionMode.matches) return;
-        if (event.ctrlKey || Math.abs(event.deltaY) < 8 || Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+        if (
+            event.ctrlKey ||
+            Math.abs(event.deltaY) < 8 ||
+            Math.abs(event.deltaX) > Math.abs(event.deltaY)
+        ) {
             return;
         }
         if (transitioning) {
