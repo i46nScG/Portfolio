@@ -364,29 +364,135 @@ function line(html, cls = "text-muted") {
 }
 const link = (t, h) =>
     `<a class="text-accent underline underline-offset-2" href="${h}" target="_blank" rel="noopener">${t}</a>`;
+
 const commands = {
-    help: () => line("Commands: /about /projects /stack /contact /theme /clear"),
-    about: () =>
+    about() {
         line(
             "Developer from Indonesia. Builds Discord bots and web tools. Runs Harmony Hub. Looking for a first professional role.",
-        ),
-    projects: () =>
-        line(projects.map((p) => link(p.name, p.url) + " (" + p.lang + ")").join("<br>")),
-    stack: () => line(stack.join(", ")),
-    contact: () =>
+        );
+    },
+
+    anilist() {
+        line(link("anilist.com/Tokioshy", "https://anilist.co/user/Tokioshy/"));
+    },
+
+    anime() {
         line(
-            link(email, "mailto:" + email) +
-                "<br>" +
-                link("github.com/i46nScG", "https://github.com/i46nScG") +
-                "<br>" +
-                link("linktr.ee/Tokioshy", "https://linktr.ee/Tokioshy"),
-        ),
-    theme: () => line("Theme set to " + (toggleTheme() ? "dark" : "light") + "."),
-    clear: () => {
+            "Well, well. If you asked, my favorite anime is Overlord. That's the only anime I've ever rewatch. The story was interesting. I love overpowered character after all! And Ainz seems like unbeateable! And so his subordinates...",
+        );
+    },
+
+    blog() {
+        line(
+            link(
+                "Read my Wattpad!",
+                "https://www.wattpad.com/story/419164778-the-women-between-two-hearts",
+            ),
+        );
+    },
+
+    clear() {
         out.innerHTML = "";
     },
-    cls: () => {
+
+    cls() {
         out.innerHTML = "";
+    },
+
+    contact() {
+        line(
+            [
+                link(email, `mailto:${email}`),
+                link("github.com/i46nScG", "https://github.com/i46nScG"),
+                link("linktr.ee/Tokioshy", "https://linktr.ee/Tokioshy"),
+            ].join("<br>"),
+        );
+    },
+
+    debate() {
+        line(
+            "Oh I love to debate with people online, when I saw them giving the worst opinion ever or I just don't agree with them. You might find me on a random post arguing with random people!",
+        );
+    },
+
+    draw() {
+        line("No I can't.");
+    },
+
+    freetrial() {
+        line("What?");
+    },
+
+    game() {
+        line("I recently started to playing Heartopia. You have to check that game. It was fun.");
+    },
+
+    help() {
+        line(
+            "Commands: /about /anilist /anime /blog /clear /cls /contact /debate /draw /freetrial /game /help /hire /location /manga /music /politics /projects /quote /setup /skills /stack /status /theme /youtube",
+        );
+    },
+
+    hire() {
+        line("I am open to hire. Contact me via Email or join my Discord.");
+    },
+
+    location() {
+        line("Bandung, Indonesia.");
+    },
+
+    manga() {
+        line(
+            "I don't really read manga actually. Most of the time, I read Manhwa. But, if you really want to know what's my favorite manga, probably it's The Eminence in Shadow. I always waiting for the next chapter each month... Which isn't really great. Manhwa gives 1 chapter per week, which is more easier to enjoy. So yeah.",
+        );
+    },
+
+    music() {
+        line(
+            "My favorite music? Umm... I don't really have any. As long it sounds good in my ears, I keep listening to it. Genre? Hmmm... I don't know anything about genre. Just like what I just said. As long it sounds good, it is good, no matter what's the genre. Well if you really wanted to know what is the music I keep playing all over the time, a lot by 21Savage. Sometimes I just open Spotify and click a lot, then let spotify decide what's next.",
+        );
+    },
+
+    politics() {
+        line(
+            "It is important to keep your eyes on politics. Everything runs under politics. Keep your eyes on them. Speak up if feel their policy isn't right or against what the people want.",
+        );
+    },
+
+    projects() {
+        line(
+            projects
+                .map((project) => `${link(project.name, project.url)} (${project.lang})`)
+                .join("<br>"),
+        );
+    },
+
+    quote() {
+        line("Don't waste it for something you don't want to be.");
+    },
+
+    setup() {
+        line("I use Linux Mint.");
+    },
+
+    skills() {
+        line("Speaking.");
+    },
+
+    stack() {
+        line(stack.join(", "));
+    },
+
+    status() {
+        line("Learning Rust... Completing my plan to watch anime list.");
+    },
+
+    theme() {
+        line(`Theme set to ${toggleTheme() ? "dark" : "light"}.`);
+    },
+
+    youtube() {
+        line("I'm not a YouTuber.");
     },
 };
 function run(raw) {
