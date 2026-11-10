@@ -57,6 +57,7 @@ const menu = $("#menu"),
     burger = $("#burger");
 const burgerLines = burger.querySelectorAll("[data-burger-line]");
 function setMenuOpen(open) {
+    if (!open && menu.contains(document.activeElement)) burger.focus();
     menu.classList.toggle("max-h-64", open);
     menu.classList.toggle("max-h-0", !open);
     menu.classList.toggle("translate-y-0", open);
@@ -93,8 +94,6 @@ const bar = $("#bar"),
     nav = $("#nav");
 const sectionLinks = document.querySelectorAll(".section-nav-link");
 const pageSections = [...document.querySelectorAll("main > .page-section")];
-const main = $("main");
-const desktopSectionMode = matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)");
 const sectionAliases = new Map([
     ["top", "home"],
     ["stack", "skills"],
@@ -114,31 +113,21 @@ if (location.hash) {
 } else if (!history.state) {
     history.replaceState({ sectionIndex: currentSectionIndex }, "", getCleanUrl());
 }
-const transitionDuration = reduced ? 0 : 850;
-let transitionTimer = 0;
-let pendingNavigation = null;
-let transitioning = false;
 
 function updateNavigationState() {
-    if (!desktopSectionMode.matches) {
-        const viewportCenter = innerHeight / 2;
-        const activeSection = pageSections.find((section) => {
-            const bounds = section.getBoundingClientRect();
-            return bounds.top <= viewportCenter && bounds.bottom > viewportCenter;
-        });
-        if (activeSection) currentSectionIndex = pageSections.indexOf(activeSection);
-    }
+    const viewportCenter = innerHeight / 2;
+    const activeSection = pageSections.find((section) => {
+        const bounds = section.getBoundingClientRect();
+        return bounds.top <= viewportCenter && bounds.bottom > viewportCenter;
+    });
+    if (activeSection) currentSectionIndex = pageSections.indexOf(activeSection);
 
     const maxScroll = root.scrollHeight - innerHeight;
-    const progress = desktopSectionMode.matches
-        ? currentSectionIndex / Math.max(pageSections.length - 1, 1)
-        : maxScroll > 0
-          ? scrollY / maxScroll
-          : 0;
+    const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
     bar.style.transform = `scaleX(${progress})`;
-    nav.classList.toggle("border-transparent", currentSectionIndex === 0);
-    nav.classList.toggle("border-line", currentSectionIndex > 0);
-    nav.classList.toggle("bg-bg/70", currentSectionIndex > 0);
+    nav.classList.toggle("border-transparent", scrollY <= 10);
+    nav.classList.toggle("border-line", scrollY > 10);
+    nav.classList.toggle("bg-bg/70", scrollY > 10);
     sectionLinks.forEach((link) => {
         if (sectionIndexForHash(link.hash) === currentSectionIndex) {
             link.setAttribute("aria-current", "location");
@@ -147,105 +136,14 @@ function updateNavigationState() {
         }
     });
 }
-
-pageSections.forEach((section, index) => {
-    section.style.setProperty("--entry-offset", index % 2 ? "100%" : "-100%");
-});
-
-function setDesktopNavigation(enabled) {
-    clearTimeout(transitionTimer);
-    transitionTimer = 0;
-    transitioning = false;
-    pendingNavigation = null;
-    main.classList.toggle("section-stack", enabled);
-    document.body.classList.toggle("horizontal-navigation", enabled);
-    pageSections.forEach((section, index) => {
-        section.classList.remove("is-leaving");
-        section.classList.toggle("is-active", enabled && index === currentSectionIndex);
-        section.style.removeProperty("--exit-offset");
-        section.inert = enabled && index !== currentSectionIndex;
-        section.setAttribute("aria-hidden", enabled && index !== currentSectionIndex);
-    });
-    updateNavigationState();
-}
-
-desktopSectionMode.addEventListener("change", (event) => {
-    setDesktopNavigation(event.matches);
-});
-setDesktopNavigation(desktopSectionMode.matches);
+addEventListener("scroll", updateNavigationState, { passive: true });
+addEventListener("resize", updateNavigationState, { passive: true });
 updateNavigationState();
-if (!desktopSectionMode.matches && currentSectionIndex > 0) {
+
+if (currentSectionIndex > 0) {
     requestAnimationFrame(() => {
-        pageSections[currentSectionIndex]?.scrollIntoView();
+        pageSections[currentSectionIndex]?.scrollIntoView({ behavior: "instant" });
     });
-}
-
-function navigateToSection(index, { updateHistory = true } = {}) {
-    if (index < 0 || index >= pageSections.length || index === currentSectionIndex) return;
-    if (transitioning) {
-        pendingNavigation = { index, updateHistory };
-        return;
-    }
-
-    const previousIndex = currentSectionIndex;
-    const previous = pageSections[previousIndex];
-    const next = pageSections[index];
-    if (updateHistory) history.pushState({ sectionIndex: index }, "", getCleanUrl());
-
-    transitioning = true;
-    currentSectionIndex = index;
-    const enteringFromRight = index % 2 === 1;
-    next.style.setProperty("--entry-offset", enteringFromRight ? "100%" : "-100%");
-    void next.offsetWidth;
-    previous.style.setProperty("--exit-offset", enteringFromRight ? "-100%" : "100%");
-    previous.classList.remove("is-active");
-    previous.classList.add("is-leaving");
-    previous.inert = true;
-    previous.setAttribute("aria-hidden", "true");
-    next.inert = false;
-    next.setAttribute("aria-hidden", "false");
-    next.classList.add("is-active");
-    updateNavigationState();
-
-    let transitionFinished = false;
-    let onTransitionEnd = null;
-
-    function cleanupTransition() {
-        clearTimeout(transitionTimer);
-        transitionTimer = 0;
-        if (onTransitionEnd) {
-            next.removeEventListener("transitionend", onTransitionEnd);
-            onTransitionEnd = null;
-        }
-    }
-
-    function finishTransition() {
-        if (transitionFinished || !transitioning) return;
-        transitionFinished = true;
-        cleanupTransition();
-        previous.classList.remove("is-leaving");
-        previous.style.removeProperty("--exit-offset");
-        transitioning = false;
-
-        const pending = pendingNavigation;
-        pendingNavigation = null;
-        if (pending && pending.index !== currentSectionIndex) {
-            navigateToSection(pending.index, { updateHistory: pending.updateHistory });
-        }
-    }
-
-    if (!transitionDuration) {
-        finishTransition();
-        return;
-    }
-
-    onTransitionEnd = (event) => {
-        if (event.target === next && event.propertyName === "transform") {
-            finishTransition();
-        }
-    };
-    next.addEventListener("transitionend", onTransitionEnd);
-    transitionTimer = setTimeout(finishTransition, transitionDuration + 100);
 }
 
 document.addEventListener("click", (event) => {
@@ -265,27 +163,20 @@ document.addEventListener("click", (event) => {
     const index = sectionIndexForHash(anchor.hash);
     if (index < 0) return;
     event.preventDefault();
-    if (desktopSectionMode.matches) {
-        navigateToSection(index);
-    } else {
+    if (index !== currentSectionIndex)
         history.pushState({ sectionIndex: index }, "", getCleanUrl());
-        currentSectionIndex = index;
-        updateNavigationState();
-        pageSections[index]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
-    }
+    currentSectionIndex = index;
+    updateNavigationState();
+    pageSections[index]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
 });
 
 addEventListener("popstate", (event) => {
     const targetIndex =
         typeof event.state?.sectionIndex === "number" ? event.state.sectionIndex : 0;
     if (targetIndex === currentSectionIndex) return;
-    if (desktopSectionMode.matches) {
-        navigateToSection(targetIndex, { updateHistory: false });
-    } else {
-        currentSectionIndex = targetIndex;
-        updateNavigationState();
-        pageSections[targetIndex]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
-    }
+    currentSectionIndex = targetIndex;
+    updateNavigationState();
+    pageSections[targetIndex]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
 });
 
 addEventListener("hashchange", () => {
@@ -293,116 +184,11 @@ addEventListener("hashchange", () => {
     if (location.hash) {
         history.replaceState({ sectionIndex: Math.max(index, 0) }, "", getCleanUrl());
     }
-    if (!desktopSectionMode.matches) {
-        if (index >= 0) {
-            currentSectionIndex = index;
-            pageSections[index]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
-        }
-        updateNavigationState();
-        return;
-    }
-    if (index >= 0) navigateToSection(index, { updateHistory: false });
+    if (index < 0) return;
+    currentSectionIndex = index;
+    updateNavigationState();
+    pageSections[index]?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
 });
-
-function canScrollWithinSection(target, section, direction) {
-    let element = target instanceof Element ? target : target.parentElement;
-    while (element) {
-        const style = getComputedStyle(element);
-        if (
-            /(auto|scroll|overlay)/.test(style.overflowY) &&
-            element.scrollHeight > element.clientHeight + 1 &&
-            (direction > 0
-                ? element.scrollTop + element.clientHeight < element.scrollHeight - 1
-                : element.scrollTop > 1)
-        ) {
-            return true;
-        }
-        if (element === section) break;
-        element = element.parentElement;
-    }
-    return false;
-}
-
-addEventListener(
-    "wheel",
-    (event) => {
-        if (!desktopSectionMode.matches) return;
-        if (
-            event.ctrlKey ||
-            Math.abs(event.deltaY) < 8 ||
-            Math.abs(event.deltaX) > Math.abs(event.deltaY)
-        ) {
-            return;
-        }
-        if (transitioning) {
-            event.preventDefault();
-            return;
-        }
-
-        const direction = Math.sign(event.deltaY);
-        const section = pageSections[currentSectionIndex];
-        if (canScrollWithinSection(event.target, section, direction)) return;
-        if (!pageSections[currentSectionIndex + direction]) return;
-
-        event.preventDefault();
-        navigateToSection(currentSectionIndex + direction);
-    },
-    { passive: false },
-);
-
-let touchStart = null;
-addEventListener(
-    "touchstart",
-    (event) => {
-        if (!desktopSectionMode.matches) return;
-        if (event.touches.length !== 1) {
-            touchStart = null;
-            return;
-        }
-        const touch = event.touches[0];
-        touchStart = { x: touch.clientX, y: touch.clientY, target: event.target };
-    },
-    { passive: true },
-);
-addEventListener(
-    "touchend",
-    (event) => {
-        if (!desktopSectionMode.matches) {
-            touchStart = null;
-            return;
-        }
-        if (!touchStart || event.changedTouches.length !== 1) return;
-        const touch = event.changedTouches[0];
-        const deltaX = touch.clientX - touchStart.x;
-        const deltaY = touchStart.y - touch.clientY;
-        const target = touchStart.target;
-        touchStart = null;
-        if (Math.abs(deltaY) < 40 || Math.abs(deltaY) <= Math.abs(deltaX)) return;
-        if (transitioning) {
-            event.preventDefault();
-            return;
-        }
-
-        const direction = Math.sign(deltaY);
-        const section = pageSections[currentSectionIndex];
-        if (canScrollWithinSection(target, section, direction)) return;
-        if (!pageSections[currentSectionIndex + direction]) return;
-
-        event.preventDefault();
-        navigateToSection(currentSectionIndex + direction);
-    },
-    { passive: false },
-);
-addEventListener(
-    "touchcancel",
-    () => {
-        touchStart = null;
-    },
-    { passive: true },
-);
-addEventListener("scroll", updateNavigationState, { passive: true });
-addEventListener("resize", updateNavigationState, { passive: true });
-updateNavigationState();
 
 const loader = $("#loader");
 function revealPage() {

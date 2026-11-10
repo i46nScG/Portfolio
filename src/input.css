@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-    /* Theme tokens: edit these to recolor the whole site (R G B). */
     :root {
         --bg: 250 250 250;
         --surface: 255 255 255;
@@ -31,14 +30,7 @@
         @apply bg-bg text-ink font-sans antialiased transition-colors duration-300;
         overflow-x: clip;
     }
-    body.horizontal-navigation {
-        height: 100%;
-        overflow: hidden;
-    }
-    body.horizontal-navigation #bar {
-        transition: transform 850ms cubic-bezier(0.22, 0.61, 0.36, 1);
-    }
-    body:not(.horizontal-navigation) #bar {
+    #bar {
         transition: transform 100ms linear;
     }
     ::selection {
@@ -91,7 +83,6 @@
     }
 }
 
-/* Full-screen sections */
 .page-section {
     display: flex;
     min-height: 100vh;
@@ -100,39 +91,7 @@
     justify-content: center;
     padding-block: 6rem 3rem;
 }
-main.section-stack {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    overflow: hidden;
-}
-main.section-stack > .page-section {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    min-height: 100svh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateX(var(--entry-offset, 100%));
-}
-main.section-stack > .page-section.is-active,
-main.section-stack > .page-section.is-leaving {
-    visibility: visible;
-    transition: transform 850ms cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-main.section-stack > .page-section.is-active {
-    pointer-events: auto;
-    transform: translateX(0);
-}
-main.section-stack > .page-section.is-leaving {
-    transform: translateX(var(--exit-offset));
-}
+
 .hero-section {
     padding-block: 7rem 4rem;
 }
@@ -268,7 +227,6 @@ main.section-stack > .page-section.is-leaving {
     line-height: 1.6;
 }
 
-/* Hero entrance (one orchestrated moment) */
 @keyframes rise {
     from {
         opacity: 0;
@@ -285,7 +243,6 @@ main.section-stack > .page-section.is-leaving {
     animation-delay: var(--d, 0s);
 }
 
-/* Floating background blobs */
 @keyframes drift {
     0%,
     100% {
@@ -303,7 +260,6 @@ main.section-stack > .page-section.is-leaving {
     animation: drift 14s ease-in-out infinite;
 }
 
-/* Hero details */
 .hero-section {
     isolation: isolate;
     background:
@@ -466,7 +422,6 @@ main.section-stack > .page-section.is-leaving {
     }
 }
 
-/* Typing caret */
 @keyframes blink {
     50% {
         opacity: 0;
@@ -482,7 +437,6 @@ main.section-stack > .page-section.is-leaving {
     animation: blink 1s steps(1) infinite;
 }
 
-/* Stack marquee */
 @keyframes marquee {
     to {
         transform: translateX(calc(-1 * var(--marquee-loop-width)));
@@ -503,7 +457,6 @@ main.section-stack > .page-section.is-leaving {
     animation-play-state: paused;
 }
 
-/* Scroll reveal */
 [data-reveal] {
     opacity: 0;
     transform: translateY(18px);
@@ -539,7 +492,6 @@ main.section-stack > .page-section.is-leaving {
     }
 }
 
-/* Project cards */
 .card {
     transform-style: preserve-3d;
     transition:
@@ -577,7 +529,6 @@ main.section-stack > .page-section.is-leaving {
     transform: translate(3px, -3px);
 }
 
-/* Cursor glow (desktop pointers only) */
 #glow {
     background: radial-gradient(
         480px circle at var(--mx, 50%) var(--my, 30%),
@@ -658,6 +609,7 @@ main.section-stack > .page-section.is-leaving {
         overflow: hidden;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
+        line-clamp: 3;
         font-size: 0.75rem;
         line-height: 1.4;
     }
@@ -689,12 +641,7 @@ main.section-stack > .page-section.is-leaving {
     html {
         scroll-behavior: auto;
     }
-    body.horizontal-navigation #bar {
-        transition: none;
-    }
-    main.section-stack > .page-section,
-    main.section-stack > .page-section.is-active,
-    main.section-stack > .page-section.is-leaving {
+    #bar {
         transition: none;
     }
     .site-loader {
