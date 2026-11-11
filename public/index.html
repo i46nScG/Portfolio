@@ -164,11 +164,6 @@
                 id="home"
                 class="page-section hero-section relative overflow-hidden px-5 pb-20 pt-32 md:pt-40"
             >
-                <div class="blob -left-20 top-10 h-72 w-72 bg-accent"></div>
-                <div
-                    class="blob right-0 top-40 h-80 w-80 bg-soft"
-                    style="animation-delay: -6s"
-                ></div>
                 <div class="hero-grid" aria-hidden="true"></div>
                 <div
                     class="relative mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-2"
@@ -219,30 +214,38 @@
                         </div>
                     </div>
                     <div class="hero-terminal-wrap rise" style="--d: 0.45s">
-                        <div class="orbit orbit-one" aria-hidden="true"></div>
-                        <div class="orbit orbit-two" aria-hidden="true"></div>
                         <div class="floating-note note-top" aria-hidden="true">
-                            <span class="note-icon">&lt;/&gt;</span>
+                            <span class="note-icon">JS</span>
                             <span
-                                ><strong>Made with care</strong
-                                ><small>one line at a time</small></span
+                                ><strong>Discord.js &amp; Edge</strong
+                                ><small>v14 · Cloudflare Workers</small></span
                             >
                         </div>
                         <div class="floating-note note-bottom" aria-hidden="true">
                             <span class="status-dot"></span>
                             <span
-                                ><strong>Currently building</strong
-                                ><small>bots · web · tools</small></span
+                                ><strong>Harmony Hub</strong
+                                ><small>Active bot infrastructure</small></span
                             >
                         </div>
                         <div
                             class="terminal-window rounded-2xl border border-line bg-surface shadow-xl shadow-accent/10"
                         >
-                            <div class="flex items-center gap-2 border-b border-line px-4 py-3">
-                                <span class="h-3 w-3 rounded-full bg-soft/80"></span
-                                ><span class="h-3 w-3 rounded-full bg-muted/40"></span
-                                ><span class="h-3 w-3 rounded-full bg-accent/70"></span>
-                                <span class="ml-2 text-sm text-muted">Try a command</span>
+                            <div
+                                class="flex items-center justify-between border-b border-line px-4 py-3 font-mono text-xs"
+                            >
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="h-2.5 w-2.5 rounded-full border border-line bg-soft/80"
+                                    ></span>
+                                    <span
+                                        class="h-2.5 w-2.5 rounded-full border border-line bg-muted/40"
+                                    ></span>
+                                    <span
+                                        class="h-2.5 w-2.5 rounded-full border border-line bg-accent/70"
+                                    ></span>
+                                    <span class="ml-2 text-sm text-muted">Try a command</span>
+                                </div>
                             </div>
                             <div
                                 id="out"
@@ -250,10 +253,11 @@
                                 class="h-64 space-y-2 overflow-y-auto p-4 font-mono text-sm leading-relaxed"
                             ></div>
                             <div class="flex flex-wrap gap-2 border-t border-line px-4 pt-3">
-                                <button data-cmd="about" class="chip">/about</button
-                                ><button data-cmd="projects" class="chip">/projects</button>
-                                <button data-cmd="stack" class="chip">/stack</button
-                                ><button data-cmd="contact" class="chip">/contact</button>
+                                <button data-cmd="help" class="chip">/help</button>
+                                <button data-cmd="about" class="chip">/about</button>
+                                <button data-cmd="projects" class="chip">/projects</button>
+                                <button data-cmd="stack" class="chip">/stack</button>
+                                <button data-cmd="contact" class="chip">/contact</button>
                                 <button data-cmd="theme" class="chip">/theme</button>
                             </div>
                             <form
@@ -261,11 +265,11 @@
                                 class="flex items-center gap-2 px-4 pb-4 pt-3 font-mono text-sm"
                                 autocomplete="off"
                             >
-                                <span class="text-soft">/</span>
+                                <span class="font-semibold text-accent">/</span>
                                 <input
                                     id="cmdInput"
                                     aria-label="Type a command, for example help"
-                                    placeholder="help"
+                                    placeholder="help (press Enter or tap a chip)"
                                     class="w-full bg-transparent outline-none placeholder:text-muted/60"
                                 />
                             </form>
@@ -336,7 +340,7 @@
                     </div>
                     <div
                         id="grid"
-                        class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3"
+                        class="mt-10 grid gap-6 md:grid-cols-2"
                         style="perspective: 1000px"
                     ></div>
                     <a
@@ -440,11 +444,11 @@
                 <footer
                     class="site-footer z-10 border-t border-line px-5 py-6 text-center text-sm text-muted"
                 >
-                    © <span id="year"></span> Tokioshy. Built with care.
+                    © <span id="year"></span> Tokioshy.
                 </footer>
             </section>
         </main>
 
-        <script src="/assets/main.js" defer></script>
+        <script src="/assets/index.js" defer></script>
     </body>
 </html>
