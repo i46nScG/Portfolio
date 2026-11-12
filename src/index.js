@@ -376,8 +376,8 @@ function renderProjects() {
             const metaItems = (p.meta || [])
                 .map(
                     (m) => `
-                <div class="space-y-0.5">
-                    <span class="block font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">${m.label}</span>
+                <div class="space-y-0.5 min-w-0">
+                    <span class="block truncate font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">${m.label}</span>
                     <span class="block truncate font-mono text-xs font-medium text-ink">${m.value}</span>
                 </div>`,
                 )
@@ -385,67 +385,67 @@ function renderProjects() {
 
             if (isBot) {
                 return `
-                <article data-reveal="scale" style="--d:${i * 0.05}s" class="card relative flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 transition hover:border-accent/60 sm:p-6">
-                    <div>
+                <article data-reveal="scale" style="--d:${i * 0.05}s" class="card relative flex flex-col justify-between rounded-2xl border border-line bg-surface p-4 sm:p-6 transition hover:border-accent/60 w-full max-w-full min-w-0">
+                    <div class="min-w-0">
                         <!-- Author Header (Discord Bot Identity) -->
-                        <div class="flex items-center justify-between border-b border-line/60 pb-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="grid h-8 w-8 place-items-center rounded-lg border border-line bg-bg font-mono text-xs font-bold text-ink">
+                        <div class="flex items-center justify-between border-b border-line/60 pb-3 gap-2 min-w-0">
+                            <div class="flex items-center gap-2 min-w-0 flex-1">
+                                <div class="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-bg font-mono text-xs font-bold text-ink">
                                     ${p.name.slice(0, 2).toUpperCase()}
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <h3 class="font-display text-base font-bold text-ink">${p.name}</h3>
-                                    <span class="rounded bg-ink px-1.5 py-0.5 font-mono text-[9px] font-bold tracking-wider text-bg">APP</span>
+                                <div class="flex items-center gap-1.5 min-w-0">
+                                    <h3 class="font-display text-base font-bold text-ink truncate">${p.name}</h3>
+                                    <span class="shrink-0 rounded bg-ink px-1.5 py-0.5 font-mono text-[9px] font-bold tracking-wider text-bg">APP</span>
                                 </div>
-                                <span class="hidden font-mono text-[11px] text-muted/70 sm:inline">${p.status}</span>
+                                <span class="hidden font-mono text-[11px] text-muted/70 sm:inline truncate">${p.status}</span>
                             </div>
-                            <span class="inline-flex items-center gap-1.5 rounded-full border border-line/80 bg-bg/50 px-2.5 py-0.5 font-mono text-xs text-muted">
+                            <span class="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-line/80 bg-bg/50 px-2.5 py-0.5 font-mono text-xs text-muted">
                                 <span class="h-1.5 w-1.5 rounded-full bg-soft"></span>
                                 ${p.lang}
                             </span>
                         </div>
 
                         <!-- Discord Embed Container -->
-                        <div class="mt-4 space-y-3 rounded-l-sm rounded-r-xl border border-line/70 border-l-[3.5px] border-l-ink bg-bg/40 p-4 dark:border-l-ink">
-                            <div class="flex items-center gap-1.5 font-mono text-xs text-muted">
+                        <div class="mt-4 space-y-3 rounded-l-sm rounded-r-xl border border-line/70 border-l-[3.5px] border-l-ink bg-bg/40 p-3.5 sm:p-4 dark:border-l-ink min-w-0 max-w-full">
+                            <div class="flex items-center gap-1.5 font-mono text-xs text-muted min-w-0">
                                 <span class="font-semibold text-accent">/</span>
-                                <span class="font-semibold text-ink">${p.name.toLowerCase()}</span>
-                                <span class="text-muted/60">— overview</span>
+                                <span class="font-semibold text-ink truncate">${p.name.toLowerCase()}</span>
+                                <span class="text-muted/60 shrink-0">— overview</span>
                             </div>
 
-                            <p class="text-sm font-medium leading-relaxed text-ink">${p.desc}</p>
+                            <p class="text-sm font-medium leading-relaxed text-ink break-words">${p.desc}</p>
 
                             <!-- Proof of Work & Technical Hurdle -->
-                            <div class="rounded-lg border border-line/60 bg-surface/90 p-3">
+                            <div class="rounded-lg border border-line/60 bg-surface/90 p-3 min-w-0">
                                 <div class="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">
-                                    <svg class="h-3 w-3 text-ink" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <svg class="h-3 w-3 shrink-0 text-ink" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                                     </svg>
-                                    <span>Proof of Work &amp; Architecture</span>
+                                    <span class="truncate">Proof of Work &amp; Architecture</span>
                                 </div>
-                                <p class="mt-1 font-sans text-xs leading-relaxed text-muted">${p.proof}</p>
+                                <p class="mt-1 font-sans text-xs leading-relaxed text-muted break-words">${p.proof}</p>
                             </div>
 
                             <!-- Structured Field Layout -->
-                            <div class="grid grid-cols-2 gap-2.5 pt-1 sm:grid-cols-3">
+                            <div class="grid grid-cols-2 gap-2.5 pt-1 sm:grid-cols-3 min-w-0">
                                 ${metaItems}
                             </div>
 
                             <!-- Embed Footer -->
-                            <div class="flex items-center justify-between border-t border-line/50 pt-2 font-mono text-[11px] text-muted">
-                                <span>${p.footer}</span>
-                                <span class="text-[10px]">Verified</span>
+                            <div class="flex items-center justify-between gap-2 border-t border-line/50 pt-2 font-mono text-[11px] text-muted min-w-0">
+                                <span class="truncate min-w-0" title="${p.footer}">${p.footer}</span>
+                                <span class="shrink-0 text-[10px]">Verified</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card Actions -->
-                    <div class="mt-5 flex items-center justify-between border-t border-line/50 pt-3">
-                        <a href="${p.url}" target="_blank" rel="noopener" class="card-link inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-accent underline-offset-4 hover:underline">
+                    <div class="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-line/50 pt-3 min-w-0">
+                        <a href="${p.url}" target="_blank" rel="noopener" class="card-link shrink-0 inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-accent underline-offset-4 hover:underline">
                             <span>Inspect Source</span>
                             <span aria-hidden="true">↗</span>
                         </a>
-                        <span class="font-mono text-[11px] text-muted/70">github.com/${repoSlug}</span>
+                        <span class="font-mono text-[11px] text-muted/70 truncate min-w-0">github.com/${repoSlug}</span>
                     </div>
                 </article>`;
             } else {
@@ -454,67 +454,69 @@ function renderProjects() {
                     "https://" + p.name.toLowerCase().replace(/[^a-z0-9]/g, "") + ".local";
                 const previewBadge = p.previewBadge || "client-only";
                 return `
-                <article data-reveal="scale" style="--d:${i * 0.05}s" class="card relative flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 transition hover:border-accent/60 sm:p-6">
-                    <div>
+                <article data-reveal="scale" style="--d:${i * 0.05}s" class="card relative flex flex-col justify-between rounded-2xl border border-line bg-surface p-4 sm:p-6 transition hover:border-accent/60 w-full max-w-full min-w-0">
+                    <div class="min-w-0">
                         <!-- Author Header (Web Tool Identity) -->
-                        <div class="flex items-center justify-between border-b border-line/60 pb-3">
-                            <div class="flex items-center gap-2.5">
-                                <div class="grid h-8 w-8 place-items-center rounded-lg border border-line bg-bg font-mono text-xs font-bold text-ink">
+                        <div class="flex items-center justify-between border-b border-line/60 pb-3 gap-2 min-w-0">
+                            <div class="flex items-center gap-2 min-w-0 flex-1">
+                                <div class="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-bg font-mono text-xs font-bold text-ink">
                                     ${p.name.slice(0, 2).toUpperCase()}
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <h3 class="font-display text-base font-bold text-ink">${p.name}</h3>
-                                    <span class="rounded border border-line bg-bg px-1.5 py-0.5 font-mono text-[9px] font-bold tracking-wider text-muted">WEB</span>
+                                <div class="flex items-center gap-1.5 min-w-0">
+                                    <h3 class="font-display text-base font-bold text-ink truncate">${p.name}</h3>
+                                    <span class="shrink-0 rounded border border-line bg-bg px-1.5 py-0.5 font-mono text-[9px] font-bold tracking-wider text-muted">WEB</span>
                                 </div>
-                                <span class="hidden font-mono text-[11px] text-muted/70 sm:inline">${p.status}</span>
+                                <span class="hidden font-mono text-[11px] text-muted/70 sm:inline truncate">${p.status}</span>
                             </div>
-                            <span class="inline-flex items-center gap-1.5 rounded-full border border-line/80 bg-bg/50 px-2.5 py-0.5 font-mono text-xs text-muted">
+                            <span class="shrink-0 inline-flex items-center gap-1.5 rounded-full border border-line/80 bg-bg/50 px-2.5 py-0.5 font-mono text-xs text-muted">
                                 <span class="h-1.5 w-1.5 rounded-full bg-soft"></span>
                                 ${p.lang}
                             </span>
                         </div>
 
                         <!-- Web Inspector Container -->
-                        <div class="mt-4 space-y-3 rounded-xl border border-line/70 bg-bg/40 p-4">
-                            <div class="flex items-center gap-2 rounded-lg border border-line/60 bg-surface/90 px-3 py-1.5 font-mono text-xs text-muted">
-                                <span class="h-2 w-2 rounded-full bg-soft"></span>
-                                <span class="text-ink">${previewUrl}</span>
-                                <a href="${previewUrl}" target="_blank" rel="noopener" class="ml-auto text-[10px] text-muted hover:text-accent hover:underline">${previewBadge}</a>
+                        <div class="mt-4 space-y-3 rounded-xl border border-line/70 bg-bg/40 p-3.5 sm:p-4 min-w-0 max-w-full">
+                            <div class="flex items-center justify-between gap-2 rounded-lg border border-line/60 bg-surface/90 px-3 py-1.5 font-mono text-xs text-muted min-w-0">
+                                <div class="flex items-center gap-2 min-w-0 flex-1">
+                                    <span class="h-2 w-2 shrink-0 rounded-full bg-soft"></span>
+                                    <span class="text-ink truncate min-w-0">${previewUrl}</span>
+                                </div>
+                                <a href="${previewUrl}" target="_blank" rel="noopener" class="ml-2 shrink-0 text-[10px] text-muted hover:text-accent hover:underline">${previewBadge}</a>
                             </div>
 
-                            <p class="text-sm font-medium leading-relaxed text-ink">${p.desc}</p>
+                            <p class="text-sm font-medium leading-relaxed text-ink break-words">${p.desc}</p>
 
                             <!-- Proof of Work & Technical Hurdle -->
-                            <div class="rounded-lg border border-line/60 bg-surface/90 p-3">
+                            <div class="rounded-lg border border-line/60 bg-surface/90 p-3 min-w-0">
                                 <div class="flex items-center gap-1.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-muted">
-                                    <svg class="h-3 w-3 text-ink" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <svg class="h-3 w-3 shrink-0 text-ink" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                     </svg>
-                                    <span>Privacy &amp; Offline Architecture</span>
+                                    <span class="truncate">Privacy &amp; Offline Architecture</span>
                                 </div>
-                                <p class="mt-1 font-sans text-xs leading-relaxed text-muted">${p.proof}</p>
+                                <p class="mt-1 font-sans text-xs leading-relaxed text-muted break-words">${p.proof}</p>
                             </div>
 
                             <!-- Structured Field Layout -->
-                            <div class="grid grid-cols-2 gap-2.5 pt-1 sm:grid-cols-3">
+                            <div class="grid grid-cols-2 gap-2.5 pt-1 sm:grid-cols-3 min-w-0">
                                 ${metaItems}
                             </div>
 
                             <!-- Embed Footer -->
-                            <div class="flex items-center justify-between border-t border-line/50 pt-2 font-mono text-[11px] text-muted">
-                                <span>${p.footer}</span>
-                                <span class="text-[10px]">Zero Telemetry</span>
+                            <div class="flex items-center justify-between gap-2 border-t border-line/50 pt-2 font-mono text-[11px] text-muted min-w-0">
+                                <span class="truncate min-w-0" title="${p.footer}">${p.footer}</span>
+                                <span class="shrink-0 text-[10px]">Zero Telemetry</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card Actions -->
-                    <div class="mt-5 flex items-center justify-between border-t border-line/50 pt-3">
-                        <a href="${p.url}" target="_blank" rel="noopener" class="card-link inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-accent underline-offset-4 hover:underline">
+                    <div class="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-line/50 pt-3 min-w-0">
+                        <a href="${p.url}" target="_blank" rel="noopener" class="card-link shrink-0 inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-accent underline-offset-4 hover:underline">
                             <span>Inspect Source</span>
                             <span aria-hidden="true">↗</span>
                         </a>
-                        <span class="font-mono text-[11px] text-muted/70">github.com/${repoSlug}</span>
+                        <span class="font-mono text-[11px] text-muted/70 truncate min-w-0">github.com/${repoSlug}</span>
                     </div>
                 </article>`;
             }
@@ -547,6 +549,7 @@ filters.addEventListener("click", (e) => {
 });
 renderFilters();
 renderProjects();
+if (finePointer && !reduced) document.querySelectorAll("#showcase .card").forEach(tilt);
 
 const chips = stack
     .map(

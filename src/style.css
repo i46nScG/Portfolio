@@ -25,10 +25,15 @@
         height: 100%;
         scroll-behavior: smooth;
         scroll-padding-top: 0;
+        overflow-x: hidden;
+        max-width: 100%;
     }
     body {
         @apply bg-bg text-ink font-sans antialiased transition-colors duration-300;
-        overflow-x: clip;
+        overflow-x: hidden;
+        max-width: 100%;
+        width: 100%;
+        position: relative;
     }
     #bar {
         transition: transform 100ms linear;
@@ -90,6 +95,9 @@
     align-items: center;
     justify-content: center;
     padding-block: 6rem 3rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .hero-section {
@@ -98,6 +106,9 @@
 .stack-section {
     flex-direction: column;
     align-items: stretch;
+}
+.showcase-section {
+    flex-direction: column;
 }
 .contact-section {
     position: relative;
@@ -472,6 +483,9 @@
 }
 
 .card {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
     transform-style: preserve-3d;
     transition:
         transform 0.2s ease,

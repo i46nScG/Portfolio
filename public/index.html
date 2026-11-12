@@ -84,6 +84,9 @@
                         >Projects</a
                     >
                     <a class="section-nav-link transition hover:text-ink" href="#skills">Stack</a>
+                    <a class="section-nav-link transition hover:text-ink" href="#showcase"
+                        >Showcase</a
+                    >
                     <a class="section-nav-link transition hover:text-ink" href="#contact"
                         >Contact</a
                     >
@@ -154,12 +157,13 @@
                     <a class="section-nav-link" href="#about">About</a
                     ><a class="section-nav-link" href="#projects">Projects</a
                     ><a class="section-nav-link" href="#skills">Stack</a
+                    ><a class="section-nav-link" href="#showcase">Showcase</a
                     ><a class="section-nav-link" href="#contact">Contact</a>
                 </div>
             </nav>
         </header>
 
-        <main id="top" class="relative z-10">
+        <main id="top" class="relative z-10 w-full max-w-full overflow-x-hidden">
             <section
                 id="home"
                 class="page-section hero-section relative overflow-hidden px-5 pb-20 pt-32 md:pt-40"
@@ -326,7 +330,7 @@
                 </div>
             </section>
             <section id="projects" class="page-section px-5 py-20">
-                <div class="mx-auto w-full max-w-6xl">
+                <div class="mx-auto w-full max-w-6xl min-w-0">
                     <div class="flex flex-wrap items-end justify-between gap-6">
                         <h2 data-reveal class="font-display text-4xl font-bold tracking-tight">
                             Projects
@@ -335,12 +339,12 @@
                             id="filters"
                             role="group"
                             aria-label="Filter projects"
-                            class="flex gap-2"
+                            class="flex flex-wrap gap-2"
                         ></div>
                     </div>
                     <div
                         id="grid"
-                        class="mt-10 grid gap-6 md:grid-cols-2"
+                        class="mt-10 grid w-full max-w-full min-w-0 grid-cols-1 gap-6 md:grid-cols-2"
                         style="perspective: 1000px"
                     ></div>
                     <a
@@ -387,6 +391,132 @@
                             <p>
                                 Serverless projects and backend work with Cloudflare Workers and
                                 CI4.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            <section id="showcase" class="page-section showcase-section px-5 py-20">
+                <div class="mx-auto w-full max-w-6xl min-w-0">
+                    <div data-reveal>
+                        <span
+                            class="font-mono text-xs font-semibold uppercase tracking-wider text-accent"
+                            >GALLERY</span
+                        >
+                        <h2 class="mt-2 font-display text-4xl font-bold tracking-tight">
+                            Showcase
+                        </h2>
+                    </div>
+                    <div
+                        class="mt-10 grid w-full max-w-full min-w-0 grid-cols-1 gap-6 md:grid-cols-2"
+                    >
+                        <article
+                            data-reveal="scale"
+                            style="--d: 0.05s"
+                            class="card showcase-card relative flex flex-col rounded-2xl border border-line bg-surface p-4 text-center transition hover:border-accent/60 sm:p-6 w-full max-w-full min-w-0"
+                        >
+                            <h3
+                                class="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl break-words"
+                            >
+                                Heartopia Profile
+                            </h3>
+                            <div
+                                class="my-4 aspect-square w-full max-w-full overflow-hidden rounded-xl border border-line/70 bg-bg/40"
+                            >
+                                <img
+                                    src="https://i.imgur.com/qfHeXoS.png"
+                                    alt="My Heartopia profile, showing name, birthday, zodiac, etc..."
+                                    class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <p
+                                class="font-sans text-sm leading-relaxed text-muted sm:text-base break-words"
+                            >
+                                The game I've been playing recently, and it was really fun. You have
+                                to try it once. There's so many to explore.
+                            </p>
+                        </article>
+                        <article
+                            data-reveal="scale"
+                            style="--d: 0.12s"
+                            class="card showcase-card relative flex flex-col rounded-2xl border border-line bg-surface p-4 text-center transition hover:border-accent/60 sm:p-6 w-full max-w-full min-w-0"
+                        >
+                            <h3
+                                class="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl break-words"
+                            >
+                                My Favorite Anime
+                            </h3>
+                            <div
+                                class="my-4 aspect-square w-full max-w-full overflow-hidden rounded-xl border border-line/70 bg-bg/40"
+                            >
+                                <img
+                                    src="https://i.imgur.com/KwOC3DK.png"
+                                    alt="A list of my favorite anime"
+                                    class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <p
+                                class="font-sans text-sm leading-relaxed text-muted sm:text-base break-words"
+                            >
+                                It's all listed on my Anilist website. Feel free to check. And yes,
+                                most of them are GL/Yuri. I love Lesbians.
+                            </p>
+                        </article>
+                        <article
+                            data-reveal="scale"
+                            style="--d: 0.19s"
+                            class="card showcase-card relative flex flex-col rounded-2xl border border-line bg-surface p-4 text-center transition hover:border-accent/60 sm:p-6 w-full max-w-full min-w-0"
+                        >
+                            <h3
+                                class="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl break-words"
+                            >
+                                이명인 x 채지원
+                            </h3>
+                            <div
+                                class="my-4 aspect-square w-full max-w-full overflow-hidden rounded-xl border border-line/70 bg-bg/40"
+                            >
+                                <img
+                                    src="https://i.imgur.com/ptCs5j1.jpeg"
+                                    alt="Girls Love Characters"
+                                    class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <p
+                                class="font-sans text-sm leading-relaxed text-muted sm:text-base break-words"
+                            >
+                                I really love them. They're from Relationship Guidelines. I really
+                                recommend you to read the manhwa. It was great.
+                            </p>
+                        </article>
+                        <article
+                            data-reveal="scale"
+                            style="--d: 0.26s"
+                            class="card showcase-card relative flex flex-col rounded-2xl border border-line bg-surface p-4 text-center transition hover:border-accent/60 sm:p-6 w-full max-w-full min-w-0"
+                        >
+                            <h3
+                                class="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl break-words"
+                            >
+                                Midnight Commute
+                            </h3>
+                            <div
+                                class="my-4 aspect-square w-full max-w-full overflow-hidden rounded-xl border border-line/70 bg-bg/40"
+                            >
+                                <img
+                                    src="https://i.pinimg.com/736x/16/77/1a/16771a1776b5bd1c0eeff53677948c1a.jpg"
+                                    alt="A visual of ai generated image of female cat"
+                                    class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                                    loading="lazy"
+                                />
+                            </div>
+                            <p
+                                class="font-sans text-sm leading-relaxed text-muted sm:text-base break-words"
+                            >
+                                An anime-style illustration of a cat-eared schoolgirl with long
+                                black hair featuring red highlights, standing inside a dimly lit
+                                train car.
                             </p>
                         </article>
                     </div>
