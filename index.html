@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script>
+            document.documentElement.classList.add("is-loading");
+        </script>
+        <style>
+            html.is-loading #root > :not(#loader) {
+                visibility: hidden !important;
+            }
+            #loader {
+                position: fixed;
+                inset: 0;
+                z-index: 100;
+                display: grid;
+                place-items: center;
+                background: #fafafa;
+                color: #18181b;
+            }
+            .dark #loader {
+                background: #09090b;
+                color: #f4f4f5;
+            }
+        </style>
+        <title>Tokioshy — Developer</title>
+        <meta
+            name="description"
+            content="Hi, I'm an Indonesian developer who building Discord bots and web tools with JavaScript and TypeScript. Explore selected projects and get in touch with me!"
+        />
+        <meta name="theme-color" content="#09090b" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Tokioshy — Developer" />
+        <meta
+            property="og:description"
+            content="Hi, I'm an Indonesian developer who building Discord bots and web tools with JavaScript and TypeScript. Explore selected projects and get in touch with me!"
+        />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <script>
+            window.va =
+                window.va ||
+                function () {
+                    (window.vaq = window.vaq || []).push(arguments);
+                };
+        </script>
+        <script defer src="/_vercel/insights/script.js"></script>
+        <script>
+            try {
+                var t = localStorage.getItem("theme");
+                if (t === "dark" || (!t && matchMedia("(prefers-color-scheme: dark)").matches))
+                    document.documentElement.classList.add("dark");
+            } catch (e) {}
+        </script>
+    </head>
+    <body>
+        <div id="root">
+            <div id="loader" class="site-loader" role="status" aria-live="polite">
+                <div class="loader-content">
+                    <span class="loader-indicator" aria-hidden="true"></span>
+                    <span>Getting your personal information secretly...</span>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
+</html>

@@ -35,9 +35,6 @@
         width: 100%;
         position: relative;
     }
-    #bar {
-        transition: transform 100ms linear;
-    }
     ::selection {
         background: rgb(var(--accent) / 0.3);
     }
@@ -56,16 +53,6 @@
     place-items: center;
     background: rgb(var(--bg));
     color: rgb(var(--ink));
-    opacity: 1;
-    visibility: visible;
-    transition:
-        opacity 350ms ease,
-        visibility 350ms;
-}
-.site-loader.is-hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
 }
 .loader-content {
     display: flex;
@@ -144,11 +131,9 @@
     padding: 0.75rem 1rem 0.75rem 0.75rem;
     transition:
         border-color 0.25s ease,
-        transform 0.25s ease,
         box-shadow 0.25s ease;
 }
 .profile-card:hover {
-    transform: translateY(-3px);
     border-color: rgb(var(--accent) / 0.55);
     box-shadow: 0 16px 36px -24px rgb(var(--accent) / 0.6);
 }
@@ -215,12 +200,10 @@
         rgb(var(--surface) / 0.8);
     padding: 1.25rem;
     transition:
-        transform 0.25s ease,
         border-color 0.25s ease,
         box-shadow 0.25s ease;
 }
 .stack-card:hover {
-    transform: translateY(-4px);
     border-color: rgb(var(--accent) / 0.45);
     box-shadow: 0 16px 36px -28px rgb(var(--accent) / 0.7);
 }
@@ -236,22 +219,6 @@
     color: rgb(var(--muted));
     font-size: 0.9rem;
     line-height: 1.6;
-}
-
-@keyframes rise {
-    from {
-        opacity: 0;
-        transform: translateY(24px);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
-.rise {
-    opacity: 0;
-    animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-    animation-delay: var(--d, 0s);
 }
 
 .hero-section {
@@ -447,48 +414,13 @@
     animation-play-state: paused;
 }
 
-[data-reveal] {
-    opacity: 0;
-    transform: translateY(18px);
-    transition:
-        opacity 0.6s ease,
-        transform 0.6s ease;
-    transition-delay: var(--d, 0s);
-}
-[data-reveal="left"] {
-    transform: translateX(-24px);
-}
-[data-reveal="right"] {
-    transform: translateX(24px);
-}
-[data-reveal="scale"] {
-    transform: translateY(14px) scale(0.97);
-}
-[data-reveal].in {
-    opacity: 1;
-    transform: none;
-}
-.terminal-line {
-    animation: line-in 0.28s ease-out both;
-}
-@keyframes line-in {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
-
+/* Cards: tilt and hover lift are driven by Framer Motion; CSS only handles the spotlight and borders. */
 .card {
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
     transform-style: preserve-3d;
     transition:
-        transform 0.2s ease,
         border-color 0.3s,
         box-shadow 0.3s;
     will-change: transform;
@@ -522,15 +454,23 @@
     transform: translate(3px, -3px);
 }
 
-#glow {
-    background: radial-gradient(
-        480px circle at var(--mx, 50%) var(--my, 30%),
-        rgb(var(--accent) / 0.1),
-        transparent 65%
-    );
+.tip-content {
+    animation: tip-in 0.15s ease-out;
+    transform-origin: var(--radix-tooltip-content-transform-origin);
 }
+@keyframes tip-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
 @media (hover: none) {
-    #glow {
+    .cursor-glow {
         display: none;
     }
 }
@@ -633,27 +573,14 @@
     html {
         scroll-behavior: auto;
     }
-    #bar {
-        transition: none;
-    }
-    .site-loader {
-        transition: none;
-    }
     .loader-indicator {
         animation: none;
-    }
-    .rise,
-    [data-reveal] {
-        opacity: 1;
-        transform: none;
-        animation: none;
-        transition: none;
     }
     .marquee-track,
     .caret,
     .status-dot,
     .floating-note,
-    .terminal-line {
+    .tip-content {
         animation: none;
     }
     .note-bottom {
