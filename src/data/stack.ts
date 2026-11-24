@@ -13,7 +13,7 @@ export const stackDetails: Record<string, string> = {
     TypeScript: "Languages",
     PHP: "Languages",
     CSS: "Languages",
-    "Discord.js": "Ecosystem · v13 & v14",
+    "Discord.js": "Ecosystem · v14",
     "Cloudflare Workers": "Cloud/Edge · HTTP Interactions",
     CI4: "Ecosystem",
 };

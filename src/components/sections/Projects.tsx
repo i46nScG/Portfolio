@@ -14,7 +14,7 @@ export function Projects() {
     const visible = projects.filter((p) => filter === "all" || p.type === filter);
 
     return (
-        <section id="projects" className="page-section px-5 py-20">
+        <section id="projects" className="page-section projects-section px-5 py-20">
             <div className="mx-auto w-full min-w-0 max-w-6xl">
                 <Tabs.Root value={filter} onValueChange={(v) => setFilter(v as ProjectFilter)}>
                     <div className="flex flex-wrap items-end justify-between gap-6">

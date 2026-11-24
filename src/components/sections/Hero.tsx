@@ -3,6 +3,7 @@ import { email, roles } from "../../data/site";
 import { useTyped } from "../../hooks/useTyped";
 import { Rise } from "../ui/Motion";
 import { HeroTerminal } from "../terminal/HeroTerminal";
+import { HeroKineticGrid } from "./HeroKineticGrid";
 
 export function Hero() {
     const reduced = !!useReducedMotion();
@@ -13,8 +14,8 @@ export function Hero() {
             id="home"
             className="page-section hero-section relative overflow-hidden px-5 pb-20 pt-32 md:pt-40"
         >
-            <div className="hero-grid" aria-hidden="true" />
-            <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-2">
+            <HeroKineticGrid />
+            <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-2">
                 <div>
                     <Rise className="hero-status">
                         <span className="status-dot" />
