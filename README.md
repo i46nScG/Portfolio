@@ -25,6 +25,8 @@ Built with **React**, **Vite**, **TypeScript** and **Tailwind CSS**, with **Radi
 ├── public/
 │   ├── favicon.svg
 │   ├── google5ecfd878f3b7470c.html
+│   ├── robots.txt
+│   ├── sitemap.xml
 │   └── assets/                 # Showcase images (.webp)
 ├── src/
 │   ├── main.tsx                # React entry (MotionConfig reducedMotion="user")
@@ -98,3 +100,7 @@ Other commands:
 ## Deploy
 
 `vercel.json` already sets the framework (Vite), the build command (`npm run build`) and the output directory (`dist`).
+
+## SEO
+
+The canonical site URL is `https://tiko.is-a.dev/`, configured in `index.html`, `public/sitemap.xml`, and `public/robots.txt`. If the primary domain changes, update it in all three files. After deploying, submit `https://tiko.is-a.dev/sitemap.xml` in Google Search Console and request indexing for the canonical homepage. Configure the custom domain as the primary domain in Vercel so its URL is preferred over the `vercel.app` address.
